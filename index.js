@@ -14,7 +14,7 @@ const findYarnWorkspaceRoot = require('find-yarn-workspace-root')
 const debug = require('debug')('@cypress/github-action')
 const { ping } = require('./src/ping')
 const { SUMMARY_ENV_VAR } = require('@actions/core/lib/summary')
-
+const cacheEnabled=false
 /**
  * Parses input command, finds the tool and
  * the runs the command.
@@ -182,6 +182,10 @@ const getCypressBinaryCache = () => {
 
 const restoreCachedNpm = () => {
   debug('trying to restore cached npm modules')
+  if (!cacheEnabled) {
+    console.log('Cache is disabled')
+    return undefined
+  }
   const NPM_CACHE = getNpmCache()
   return restoreCache([NPM_CACHE.inputPath], NPM_CACHE.primaryKey, [
     NPM_CACHE.restoreKeys
@@ -193,6 +197,10 @@ const restoreCachedNpm = () => {
 const saveCachedNpm = () => {
   debug('saving npm modules')
   const NPM_CACHE = getNpmCache()
+  if (!cacheEnabled) {
+    console.log('Cache is disabled')
+    return -1
+  }
   return saveCache([NPM_CACHE.inputPath], NPM_CACHE.primaryKey).catch(
     (e) => {
       console.warn('Saving npm cache error: %s', e.message)
@@ -202,6 +210,10 @@ const saveCachedNpm = () => {
 
 const restoreCachedCypressBinary = () => {
   debug('trying to restore cached Cypress binary')
+  if (!cacheEnabled) {
+    console.log('Cache is disabled')
+    return undefined
+  }
   const CYPRESS_BINARY_CACHE = getCypressBinaryCache()
   return restoreCache(
     [CYPRESS_BINARY_CACHE.inputPath],
@@ -214,7 +226,10 @@ const restoreCachedCypressBinary = () => {
 
 const saveCachedCypressBinary = () => {
   debug('saving Cypress binary')
-
+  if (!cacheEnabled) {
+    console.log('Cache is disabled')
+    return -1
+  }
   if (isCypressBinarySkipped()) {
     debug('Skipping Cypress cache save, binary is not installed')
     return Promise.resolve()
