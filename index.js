@@ -14,7 +14,7 @@ const findYarnWorkspaceRoot = require('find-yarn-workspace-root')
 const debug = require('debug')('@cypress/github-action')
 const { ping } = require('./src/ping')
 const { SUMMARY_ENV_VAR } = require('@actions/core/lib/summary')
-const cacheEnabled=false
+const cacheEnabled = false
 /**
  * Parses input command, finds the tool and
  * the runs the command.
