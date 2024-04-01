@@ -183,7 +183,7 @@ const getCypressBinaryCache = () => {
 const restoreCachedNpm = () => {
   debug('trying to restore cached npm modules')
   if (!cacheEnabled) {
-    console.log('Cache is disabled')
+    debug('cache is disabled')
     return undefined
   }
   const NPM_CACHE = getNpmCache()
@@ -211,10 +211,11 @@ const saveCachedNpm = () => {
 const restoreCachedCypressBinary = () => {
   debug('trying to restore cached Cypress binary')
   if (!cacheEnabled) {
-    console.log('Cache is disabled')
+    debug('cache is disabled')
     return undefined
   }
   const CYPRESS_BINARY_CACHE = getCypressBinaryCache()
+  debug('restoring cached cypress binary')
   return restoreCache(
     [CYPRESS_BINARY_CACHE.inputPath],
     CYPRESS_BINARY_CACHE.primaryKey,
